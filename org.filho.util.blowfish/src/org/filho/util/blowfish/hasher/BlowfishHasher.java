@@ -17,10 +17,16 @@ public class BlowfishHasher implements BlowfishSecurity {
 		String message = sdf.format(endDate).concat("$").concat(data);
 		
 		try {
-			return hasher.generateHash(message);
+			return hasher.encodeHash(message);
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Could not generate a hash with the given key, date, and data: [%s, %s, %s]", key, endDate, data), e);
 		}
+	}
+	
+	@Override
+	public String decrypt(String key, String message) {
+		AbstractBlowfishHasher hasher = new AbstractBlowfishHasher(key);
+		return hasher.convertHexToString(message);
 	}
 
 	@Override

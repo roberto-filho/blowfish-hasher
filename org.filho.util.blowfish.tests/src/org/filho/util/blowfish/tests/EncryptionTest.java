@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
+import org.filho.util.blowfish.hasher.BlowfishHasher;
 import org.filho.util.blowfish.shared.BlowfishSecurity;
 import org.joda.time.LocalDate;
 import org.junit.After;
@@ -16,11 +17,11 @@ public class EncryptionTest {
 	private Date endDate;
 	
 	private String key = "abc123";
-	private String data = "testdata";
+	private String decryptedTestValue = "testdata";
 	// TODO
 	private String testHash = "TESTHASH";
 	// TODO
-	private String expectedResult = "BLOWFISHRESULT";
+	private String encryptedTestValue = "953fffd386a22fffd2dfffdfffd2f64451144fffd5e77fffd161257cfffd";
 	
 	private BlowfishSecurity blowfishService;
 	private String dateHash;
@@ -28,7 +29,7 @@ public class EncryptionTest {
 	@Before
 	public void setUp() throws Exception {
 		// Acquire the blowfish service
-		BlowfishSecurity a = null;
+		blowfishService = new BlowfishHasher();
 		
 		// The final valid date to be encrypted
 		endDate = new LocalDate(2016, 01, 01).toDate();
@@ -36,9 +37,16 @@ public class EncryptionTest {
 
 	@Test
 	public void encryptInfoWithKeyTest() {
-		String result = blowfishService.encrypt(key, endDate, data);
+		String result = blowfishService.encrypt(key, endDate, decryptedTestValue);
 		
-		assertTrue(String.format("Expected encrypted string was [%s], but got [%s]", expectedResult, result), result.equals(expectedResult));
+		assertTrue(String.format("Expected encrypted string was [%s], but got [%s]", encryptedTestValue, result), result.equals(encryptedTestValue));
+	}
+	
+	@Test
+	public void decryptInfoWithKeyTest() {
+		String decrypt = blowfishService.decrypt(key, encryptedTestValue);
+		
+		assertTrue(String.format("Expected decrypted string was [%s], but got [%s]", decryptedTestValue, decrypt), decrypt.equals(decryptedTestValue));
 	}
 	
 	@Test
