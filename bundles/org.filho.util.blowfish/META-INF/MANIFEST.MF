@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Blowfish Utils
+Bundle-SymbolicName: org.filho.util.blowfish
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.filho.util.blowfish.Activator
+Bundle-Vendor: Roberto Filho
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Import-Package: org.junit;version="4.11.0"
