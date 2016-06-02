@@ -8,6 +8,9 @@ cache:
 
 language: java
 
+jdk:
+  - oraclejdk8script: mvn integration-test
+
 before_install:
   - wget https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip
   - unzip -qq apache-maven-3.3.9-bin.zip
@@ -17,12 +20,3 @@ before_install:
 # Use the 'true' command to avoid up-front dependency fetching, for faster builds
 # See http://docs.travis-ci.com/user/languages/java/#Dependency-Management
 install: /bin/true
-
-script: mvn integration-test
-
-jdk:
-  - oraclejdk8
-
-language: java
-jdk:
-  - oraclejdk8
