@@ -18,13 +18,7 @@ before_install:
 # See http://docs.travis-ci.com/user/languages/java/#Dependency-Management
 install: /bin/true
 
-# script: |
-#   mvn test \
-#     --batch-mode \
-#     --settings .travis-settings.xml \
-#     -Darquillian.jboss.home=/dev/null \
-#     -Dgwt.validateOnly \
-#     -DstaticAnalysis
+script: mvn integration-test
 
 jdk:
   - oraclejdk8
