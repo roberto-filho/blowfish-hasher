@@ -19,7 +19,7 @@ public class EncryptionTest {
 	private String key = "abc123";
 	private String testValue = "this.is.a.dot.test";
 	
-	private String encryptionResult = "C7C4E0A2B7470BCB51ADCA7339B0A08ADE66C93A7D8474F5";
+	private String encryptionResult = "6C8624A47DF3362F60A7CB95FE2AE4F85078A00CA7A17339DB9ACCF903BBF79C";
 	
 	private BlowfishSecurity blowfishService;
 	private String dateHash;
