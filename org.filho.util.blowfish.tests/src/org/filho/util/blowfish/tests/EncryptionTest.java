@@ -17,11 +17,9 @@ public class EncryptionTest {
 	private Date endDate;
 	
 	private String key = "abc123";
-	private String decryptedTestValue = "testdata";
-	// TODO
-	private String testHash = "TESTHASH";
-	// TODO
-	private String encryptedTestValue = "953fffd386a22fffd2dfffdfffd2f64451144fffd5e77fffd161257cfffd";
+	private String testValue = "this.is.a.dot.test";
+	
+	private String encryptionResult = "C7C4E0A2B7470BCB51ADCA7339B0A08ADE66C93A7D8474F5";
 	
 	private BlowfishSecurity blowfishService;
 	private String dateHash;
@@ -37,16 +35,18 @@ public class EncryptionTest {
 
 	@Test
 	public void encryptInfoWithKeyTest() {
-		String result = blowfishService.encrypt(key, endDate, decryptedTestValue);
+		String result = blowfishService.encrypt(key, endDate, testValue);
 		
-		assertTrue(String.format("Expected encrypted string was [%s], but got [%s]", encryptedTestValue, result), result.equals(encryptedTestValue));
+		String failureMessage = String.format("Expected encrypted string was [%s], but got [%s]. Params: [%s, %s, %s]", encryptionResult, result, key, endDate, testValue);
+		
+		assertTrue(failureMessage, result.equals(encryptionResult));
 	}
 	
 	@Test
 	public void decryptInfoWithKeyTest() {
-		String decrypt = blowfishService.decrypt(key, encryptedTestValue);
+		String decrypt = blowfishService.decrypt(key, encryptionResult);
 		
-		assertTrue(String.format("Expected decrypted string was [%s], but got [%s]", decryptedTestValue, decrypt), decrypt.equals(decryptedTestValue));
+		assertTrue(String.format("Expected decrypted string was [%s], but got [%s]", testValue, decrypt), decrypt.equals(testValue));
 	}
 	
 	@Test
@@ -65,6 +65,13 @@ public class EncryptionTest {
 		result = blowfishService.isValid(key, invalidDate, dateHash);
 		
 		assertFalse(String.format("Date [%s] should be invalid.", invalidDate), result);
+	}
+	
+	public static void main(String[] args) throws Exception {
+		EncryptionTest test = new EncryptionTest();
+		test.setUp();
+		
+		test.encryptInfoWithKeyTest();
 	}
 
 	
