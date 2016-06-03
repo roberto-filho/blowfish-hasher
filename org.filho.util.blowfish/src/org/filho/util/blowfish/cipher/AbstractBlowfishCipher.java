@@ -14,27 +14,8 @@ import org.filho.util.blowfish.hasher.Mode;
  * @author Roberto Filho
  *
  */
-public abstract class AbstractBlowfishCipher implements BlowfishCipher {
-	private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
-	
-	private Mode mode;
+public abstract class AbstractBlowfishCipher {
 
-	public AbstractBlowfishCipher(Mode mode) {
-		this.mode = mode;
-	}
-
-	// Converts byte array to hex string
-	// From: http://stackoverflow.com/questions/9655181/convert-from-byte-array-to-hex-string-in-java
-	public static String bytesToHex(byte[] bytes) {
-		char[] hexChars = new char[bytes.length * 2];
-		for (int j = 0; j < bytes.length; j++) {
-			int v = bytes[j] & 0xFF;
-			hexChars[j * 2] = hexArray[v >>> 4];
-			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-		}
-		return new String(hexChars);
-	}
-	
 	public Cipher getCipher(Mode mode, SecretKeySpec keySpec) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
 		// Use blowfish with ECB and PKCS5 padding
 		Cipher cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding"); 
@@ -53,7 +34,18 @@ public abstract class AbstractBlowfishCipher implements BlowfishCipher {
 		return keySpec;
 	}
 	
-	protected Mode getMode() {
-		return mode;
+	private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	
+	// Converts byte array to hex string
+	// From: http://stackoverflow.com/questions/9655181/convert-from-byte-array-to-hex-string-in-java
+	public static String bytesToHex(byte[] bytes) {
+		char[] hexChars = new char[bytes.length * 2];
+		for (int j = 0; j < bytes.length; j++) {
+			int v = bytes[j] & 0xFF;
+			hexChars[j * 2] = hexArray[v >>> 4];
+			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+		}
+		return new String(hexChars);
 	}
+	
 }
