@@ -5,14 +5,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.filho.util.blowfish.hasher.BlowfishHasher;
+import org.filho.util.blowfish.AbstractPluginTest;
 import org.filho.util.blowfish.shared.BlowfishSecurity;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class EncryptionTest {
+public class EncryptionTest extends AbstractPluginTest {
 	
 	private Date endDate = new LocalDate(2016, 01, 01).toDate();
 	
@@ -25,12 +25,14 @@ public class EncryptionTest {
 	private String encryptedValue = "6C8624A47DF3362F60A7CB95FE2AE4F85078A00CA7A17339DB9ACCF903BBF79C";
 	
 	// Acquire the blowfish service
-	private BlowfishSecurity service = new BlowfishHasher();
+	private BlowfishSecurity service;
 	
 	private String dateHash;
 
 	@Before
-	public void setUp() throws Exception { }
+	public void setUp() throws Exception {
+		service = getService(BlowfishSecurity.class);
+	}
 
 	@Test
 	public void encryptInfoWithKeyTest() {

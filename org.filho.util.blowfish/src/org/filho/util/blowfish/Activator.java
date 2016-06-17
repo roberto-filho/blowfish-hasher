@@ -1,5 +1,7 @@
 package org.filho.util.blowfish;
 
+import org.filho.util.blowfish.hasher.BlowfishHasher;
+import org.filho.util.blowfish.shared.BlowfishSecurity;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -17,6 +19,8 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
+		// Registra o camarada
+		context.registerService(BlowfishSecurity.class, new BlowfishHasher(), null);
 	}
 
 	/*
