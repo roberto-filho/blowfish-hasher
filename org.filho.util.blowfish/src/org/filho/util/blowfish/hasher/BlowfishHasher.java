@@ -29,8 +29,10 @@ public class BlowfishHasher implements BlowfishSecurity {
 	public String decrypt(String key, String message) {
 		// Create the builder
 		BlowfishCipherBuilder builder = BlowfishBuilder.get(Mode.DECRYPT);
-		// Set the default base64 option
-		BlowfishCipher cipher = builder.useBase64().build();
+		
+		// Set the hashing to use
+		BlowfishCipher cipher = (useBase64 ? builder.useBase64() : builder.useHex()).build();
+		
 		try {
 			String decrypted = cipher.doAction(key, message);
 			return decrypted;

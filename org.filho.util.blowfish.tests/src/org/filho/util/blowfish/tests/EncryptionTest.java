@@ -14,39 +14,43 @@ import org.junit.Test;
 
 public class EncryptionTest {
 	
-	private Date endDate;
+	private Date endDate = new LocalDate(2016, 01, 01).toDate();
 	
 	private String key = "abc123";
-	private String testValue = "this.is.a.dot.test";
 	
-	private String encryptionResult = "6C8624A47DF3362F60A7CB95FE2AE4F85078A00CA7A17339DB9ACCF903BBF79C";
+	private String data = "this.is.a.dot.test";
 	
-	private BlowfishSecurity blowfishService;
+	private String messageWithDate = "this.is.a.dot.test$20160101";
+	
+	private String encryptedValue = "6C8624A47DF3362F60A7CB95FE2AE4F85078A00CA7A17339DB9ACCF903BBF79C";
+	
+	// Acquire the blowfish service
+	private BlowfishSecurity service = new BlowfishHasher();
+	
 	private String dateHash;
 
 	@Before
-	public void setUp() throws Exception {
-		// Acquire the blowfish service
-		blowfishService = new BlowfishHasher();
-		
-		// The final valid date to be encrypted
-		endDate = new LocalDate(2016, 01, 01).toDate();
-	}
+	public void setUp() throws Exception { }
 
 	@Test
 	public void encryptInfoWithKeyTest() {
-		String result = blowfishService.encrypt(key, endDate, testValue);
+		String result = service.encrypt(key, endDate, data);
 		
-		String failureMessage = String.format("Expected encrypted string was [%s], but got [%s]. Params: [%s, %s, %s]", encryptionResult, result, key, endDate, testValue);
 		
-		assertTrue(failureMessage, result.equals(encryptionResult));
+		String failureMessage = String.format("Expected encrypted string was [%s], but got [%s]. Params: [%s, %s, %s]", encryptedValue, result, key, endDate, data);
+		
+		assertTrue(failureMessage, result.equals(encryptedValue));
 	}
 	
 	@Test
 	public void decryptInfoWithKeyTest() {
-		String decrypt = blowfishService.decrypt(key, encryptionResult);
+		// Decrypt the encrypted test value
+		String decrypt = service.decrypt(key, encryptedValue);
+		// Build the error message
+		String errorMsg = String.format("Expected decrypted string was [%s], but got [%s]", data, decrypt);
 		
-		assertTrue(String.format("Expected decrypted string was [%s], but got [%s]", testValue, decrypt), decrypt.equals(testValue));
+		// Assert that everything is fine
+		assertTrue(errorMsg, decrypt.equals(messageWithDate));
 	}
 	
 	@Test
@@ -57,23 +61,15 @@ public class EncryptionTest {
 		Date invalidDate = new LocalDate(2016, 01, 02).toDate();
 		
 		// Testing a valid date
-		boolean result = blowfishService.isValid(key, validDate, dateHash);
+		boolean result = service.isValid(key, validDate, dateHash);
 		
 		assertTrue(String.format("Date [%s] should be valid.", validDate), result);
 		
 		// Testing and invalid date
-		result = blowfishService.isValid(key, invalidDate, dateHash);
+		result = service.isValid(key, invalidDate, dateHash);
 		
 		assertFalse(String.format("Date [%s] should be invalid.", invalidDate), result);
 	}
-	
-	public static void main(String[] args) throws Exception {
-		EncryptionTest test = new EncryptionTest();
-		test.setUp();
-		
-		test.encryptInfoWithKeyTest();
-	}
-
 	
 	@After
 	public void tearDown() throws Exception {
