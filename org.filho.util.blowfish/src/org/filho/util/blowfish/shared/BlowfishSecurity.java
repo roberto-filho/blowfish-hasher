@@ -1,5 +1,6 @@
 package org.filho.util.blowfish.shared;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import org.filho.util.blowfish.hasher.Mode;
@@ -24,10 +25,12 @@ public interface BlowfishSecurity {
 	String encrypt(String key, Date endDate, String data);
 	
 	/**
-	 * 
+	 * Decrypts the message and returns the data contained. The
+	 * data contained usually is in the form of a date and some other
+	 * arbitrary string, as per the method {@link #encrypt(String, Date, String)}
 	 * @param key
 	 * @param message
-	 * @return
+	 * @return the data contained in this message
 	 */
 	String decrypt(String key, String message);
 
@@ -37,7 +40,8 @@ public interface BlowfishSecurity {
 	 * @param date the date to check against
 	 * @param hash message encrypted with the {@link #encrypt(String, Date, String)} method.
 	 * @return <code>true</code> if the hash has a valid date.
+	 * @throws ParseException when the hash does no contain a valid date
 	 */
-	boolean isValid(String key, Date date, String hash);
+	boolean isValid(String key, Date date, String hash) throws ParseException;
 	
 }

@@ -1,14 +1,20 @@
 package org.filho.util.blowfish.hasher;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.filho.util.blowfish.cipher.api.BlowfishCipher;
 import org.filho.util.blowfish.shared.BlowfishCipherBuilder;
 import org.filho.util.blowfish.shared.BlowfishSecurity;
 
 public class BlowfishHasher implements BlowfishSecurity {
 	
+	/**
+	 * The date format used to generate the date string
+	 */
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 	
 	private boolean useBase64 = false;
@@ -41,9 +47,15 @@ public class BlowfishHasher implements BlowfishSecurity {
 		}
 	}
 
-	public boolean isValid(String key, Date date, String hash) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isValid(String key, Date date, String hash) throws ParseException {
+		// First we decrypt the message to extract the data within.
+		String decrypted = decrypt(key, hash);
+		// Splits the string into two
+		String[] message = decrypted.split("\\$");
+		
+		Date dateInMessage = sdf.parse(message[0]);
+		
+		return DateUtils.truncatedCompareTo(date, dateInMessage, Calendar.DAY_OF_MONTH) >= 0;
 	}
 	
 	private BlowfishCipherBuilder createBuilderWithDefaults(Mode mode) {

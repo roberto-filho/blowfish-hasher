@@ -19,8 +19,13 @@
       <layout>p2</layout>
     </repository>
     <repository>
-      <id>gtech-p2</id>
+      <id>gtech-p2-fiscal</id>
       <url>http://updates.gtech.site/p2-target-fiscal</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>gtech-p2</id>
+      <url>http://updates.gtech.site/p2</url>
       <layout>p2</layout>
     </repository>
   </repositories>

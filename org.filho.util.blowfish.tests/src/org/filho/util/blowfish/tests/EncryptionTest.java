@@ -3,12 +3,12 @@ package org.filho.util.blowfish.tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import org.filho.util.blowfish.AbstractPluginTest;
 import org.filho.util.blowfish.shared.BlowfishSecurity;
 import org.joda.time.LocalDate;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +38,6 @@ public class EncryptionTest extends AbstractPluginTest {
 	public void encryptInfoWithKeyTest() {
 		String result = service.encrypt(key, endDate, data);
 		
-		
 		String failureMessage = String.format("Expected encrypted string was [%s], but got [%s]. Params: [%s, %s, %s]", encryptedValue, result, key, endDate, data);
 		
 		assertTrue(failureMessage, result.equals(encryptedValue));
@@ -56,7 +55,7 @@ public class EncryptionTest extends AbstractPluginTest {
 	}
 	
 	@Test
-	public void validateHashTest() {
+	public void validateHashTest() throws ParseException {
 		// A valid date for testing (immediately before the valid date)
 		Date validDate = new LocalDate(2016, 12, 31).toDate();
 		// An invalid test date (after the final date)
@@ -71,9 +70,5 @@ public class EncryptionTest extends AbstractPluginTest {
 		result = service.isValid(key, invalidDate, dateHash);
 		
 		assertFalse(String.format("Date [%s] should be invalid.", invalidDate), result);
-	}
-	
-	@After
-	public void tearDown() throws Exception {
 	}
 }
