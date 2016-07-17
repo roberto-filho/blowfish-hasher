@@ -53,9 +53,9 @@ public class BlowfishHasher implements BlowfishSecurity {
 		// Splits the string into two
 		String[] message = decrypted.split("\\$");
 		
-		Date dateInMessage = sdf.parse(message[0]);
+		Date dateInMessage = sdf.parse(message[1]);
 		
-		return DateUtils.truncatedCompareTo(date, dateInMessage, Calendar.DAY_OF_MONTH) >= 0;
+		return DateUtils.truncatedCompareTo(date, dateInMessage, Calendar.DAY_OF_MONTH) <= 0;
 	}
 	
 	private BlowfishCipherBuilder createBuilderWithDefaults(Mode mode) {

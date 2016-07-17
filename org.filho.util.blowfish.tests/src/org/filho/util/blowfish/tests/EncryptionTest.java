@@ -27,8 +27,6 @@ public class EncryptionTest extends AbstractPluginTest {
 	// Acquire the blowfish service
 	private BlowfishSecurity service;
 	
-	private String dateHash;
-
 	@Before
 	public void setUp() throws Exception {
 		service = getService(BlowfishSecurity.class);
@@ -36,7 +34,7 @@ public class EncryptionTest extends AbstractPluginTest {
 
 	@Test
 	public void encryptInfoWithKeyTest() {
-		String result = service.encrypt(key, endDate, data);
+		String result = createDateHash();
 		
 		String failureMessage = String.format("Expected encrypted string was [%s], but got [%s]. Params: [%s, %s, %s]", encryptedValue, result, key, endDate, data);
 		
@@ -55,20 +53,47 @@ public class EncryptionTest extends AbstractPluginTest {
 	}
 	
 	@Test
-	public void validateHashTest() throws ParseException {
-		// A valid date for testing (immediately before the valid date)
-		Date validDate = new LocalDate(2016, 12, 31).toDate();
+	public void validateInvalidDate() throws ParseException {
 		// An invalid test date (after the final date)
 		Date invalidDate = new LocalDate(2016, 01, 02).toDate();
+		
+		String dateHash = createDateHash();
+		
+		// Testing and invalid date
+		boolean result = service.isValid(key, invalidDate, dateHash);
+		
+		assertFalse(String.format("Date [%s] should be invalid.", invalidDate), result);
+	}
+	
+	public void validateEqualDate() throws ParseException {
+		// An invalid test date (after the final date)
+		Date equalDate = new LocalDate(2016, 01, 02).toDate();
+		
+		String dateHash = createDateHash();
+		
+		// Testing and invalid date
+		boolean result = service.isValid(key, equalDate, dateHash);
+		
+		assertTrue(String.format("Date [%s] should be valid.", equalDate), result);
+	}
+	
+	@Test
+	public void validateValidDate() throws ParseException {
+		// A valid date for testing (immediately before the valid date)
+		Date validDate = new LocalDate(2015, 12, 31).toDate();
+		
+		String dateHash = createDateHash();
 		
 		// Testing a valid date
 		boolean result = service.isValid(key, validDate, dateHash);
 		
 		assertTrue(String.format("Date [%s] should be valid.", validDate), result);
 		
-		// Testing and invalid date
-		result = service.isValid(key, invalidDate, dateHash);
-		
-		assertFalse(String.format("Date [%s] should be invalid.", invalidDate), result);
+	}
+
+	private String createDateHash() {
+		// Encrypt the hash
+		String dateHash = service.encrypt(key, endDate, data);
+		return dateHash;
 	}
 }
